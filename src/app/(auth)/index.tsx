@@ -1,8 +1,3 @@
-import React from 'react';
-import { Redirect } from 'expo-router';
+import TermsAgree from './terms_agree';
 
-const Index = () => {
-  return <Redirect href="/(auth)/terms_agree" />;
-};
-
-export default Index;
+export default TermsAgree;

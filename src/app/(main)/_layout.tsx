@@ -1,12 +1,8 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { Slot } from 'expo-router';
+import React from 'react';
 
 const MainLayout = () => {
-  return (
-    <View>
-      <Text>MainLayout</Text>
-    </View>
-  )
-}
+  return <Slot />;
+};
 
-export default MainLayout
+export default MainLayout;
