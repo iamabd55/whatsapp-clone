@@ -1,41 +1,63 @@
-This is an Expo/React Native mobile application. Prioritize mobile-first patterns, performance, and cross-platform compatibility.
+## Agent Logs (MANDATORY)
 
-## Expo has changed — do not trust your training data
+The `agentlogs/` folder is the project's living documentation. Updating it is part of every task. A task is NOT finished until the logs are updated. Before starting any task, read these files first so you know the current state.
 
-Expo ships breaking changes every SDK release. APIs you remember are likely renamed, moved, or removed. Before writing any code that touches an Expo, EAS, or React Native API:
+### Files
 
-1. Read the major version of the `expo` package in `package.json`.
-2. Fetch the matching versioned docs: `https://docs.expo.dev/versions/v<major>.0.0/`
-3. For anything else, fetch https://docs.expo.dev/llms.txt — an index of all Expo docs with corrections to common LLM misconceptions. Follow its links to the specific page you need; never answer from memory.
+1. `agentlogs/architecture.md`: architecture and data flow
+2. `agentlogs/files.md`: summary of every file
+3. `agentlogs/changelog.md`: running history of changes
 
-## Commands
+### When to update
 
-Use `bunx` instead of `npx` if the project uses bun (`bun.lock` present).
+After ANY change that creates, deletes, renames, or meaningfully edits a file, or changes how data moves. Do it in the same task, before telling the user you are done. Do not batch updates for later.
 
-```bash
-npx expo install <package>  # ALWAYS use instead of npm/yarn/pnpm/bun add — resolves SDK-compatible versions
-npx expo start              # start the dev server
-npx expo lint               # lint
-npx tsc --noEmit            # typecheck
-npx expo-doctor             # diagnose dependency and config issues
-npx expo install --fix      # fix incompatible package versions
+### architecture.md (rewrite in place, keep it current)
+
+- Overview: what the app is, stack, folder structure (short tree).
+- Navigation and routing: how screens connect and what triggers each transition.
+- Data flow: for each feature, trace the path file by file, like
+  `Screen -> hook -> service/util -> storage or API -> back to UI`.
+  Name the real files and functions involved.
+- State management: where state lives, who reads it, who writes it.
+- External dependencies: libraries and services, and what each one is used for.
+- Config and assets: how env, theme, images, and paths are wired.
+- A Mermaid diagram of the main flow when it helps.
+Edit the existing text so it always describes the project as it is NOW. Never leave outdated descriptions.
+
+### files.md (one entry per file, edit in place)
+
+Use this format for each file, grouped by folder:
+
+```
+### path/to/file.tsx
+- Purpose: one line on what it does
+- How it works: 2 to 4 lines on the logic
+- Uses: files or libraries it depends on
+- Used by: files that import or render it
+- Gotchas: anything non-obvious (omit if none)
 ```
 
-Run lint and typecheck before declaring any task done.
+Add entries for new files, update entries for changed files, delete entries for removed files.
 
-## Navigation & Routing
+### changelog.md (append only, newest on top)
 
-- Use **Expo Router** for all navigation. Routes live in `src/app/` — every file there is a screen, `_layout.tsx` files define navigators. Keep non-route code (components, hooks, utils) outside `src/app/`.
-- Import `Link`, `router`, and `useLocalSearchParams` from `expo-router`.
-- Docs: https://docs.expo.dev/router/introduction.md
+For each task add an entry:
 
-## Building with EAS
+```
+## YYYY-MM-DD HH:MM: short title
+- What changed: files touched and what was done
+- Why: the reason or the user's request
+- Impact: what else might be affected
+- Known issues / TODO: anything left unfinished or risky
+```
 
-Use EAS to build, sign, and submit the app in the cloud (`eas build`, `eas submit`) and to ship over-the-air updates (`eas update`) — no local Xcode or Android Studio required. Run EAS CLI as `bunx eas-cli <command>` in Bun projects, or `npx eas-cli@latest <command>` otherwise; substitute that for bare `eas` in docs examples.
-Docs: https://docs.expo.dev/eas/index.md
+Keep entries short. Roll up entries older than 30 days into a few lines.
 
-## Rules
+### Rules
 
-- If `ios/` and `android/` directories do not exist, they are generated (Continuous Native Generation). Never create or edit them by hand — configure native behavior in `app.json` and config plugins.
-- Expo Go only includes its bundled native modules. After adding a library with native code, the app needs a development build: `npx expo run:ios|android` locally, or `eas build --profile development`.
-- Prefer recommended Expo modules over third-party libraries, and check your available skills before adding dependencies. Docs: https://docs.expo.dev/versions/latest/index.md
+- Be specific. Use real file names, function names, and paths. No vague text like "handles logic".
+- Never document things that do not exist. If you are unsure how something works, read the code first.
+- If you notice the logs disagree with the code, fix the logs.
+- Keep it readable by a beginner: plain language, short sentences.
+- At the end of every task, tell the user which log files you updated.
