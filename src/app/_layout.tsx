@@ -1,18 +1,42 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useColorScheme } from 'react-native';
+import '../../global.css';
+import { Redirect, Stack } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import * as ExpoSplashScreen from 'expo-splash-screen';
+import SplashScreen from '@/components/SplashScreen';
 
-import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import AppTabs from '@/components/app-tabs';
+ExpoSplashScreen.preventAutoHideAsync();
 
-SplashScreen.preventAutoHideAsync();
+const RootLayout = () => {
+  const [isAppReady, setIsAppReady] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  useEffect(() => {
+    async function prepare() {
+      try {
+        await ExpoSplashScreen.hideAsync();
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+
+    prepare();
+
+    const timer = setTimeout(() => {
+      setIsAppReady(true);
+    }, 2500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!isAppReady) {
+    return <SplashScreen />;
+  }
+
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AnimatedSplashOverlay />
-      <AppTabs />
-    </ThemeProvider>
+    <Stack screenOptions={{ headerShown: false }}>
+      {isLogin ? <Redirect href={"/(main)"}/> : <Redirect href={"/(auth)"}/>}
+    </Stack>
   );
-}
+};
+
+export default RootLayout;
